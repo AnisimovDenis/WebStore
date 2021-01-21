@@ -1,18 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
-
-using Microsoft.EntityFrameworkCore;
-
 using WebStore.DAL.Context;
 using WebStore.Domain;
 using WebStore.Domain.Entities;
-using WebStore.Infrastructure.Interfaces;
+using WebStore.Infrastructure.Services;
 
-namespace WebStore.Infrastructure.Services.InSQL
+namespace WebStore.Services.Infrastructure.Services.InSQL
 {
     public class SqlProductData : IProductData
     {
         private readonly WebStoreDB _db;
+
 
         public SqlProductData(WebStoreDB db) => _db = db;
 

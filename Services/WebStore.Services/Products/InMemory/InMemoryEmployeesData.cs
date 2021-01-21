@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using WebStore.Data;
-using WebStore.Infrastructure.Interfaces;
-using WebStore.Models;
+using WebStore.Domain.Models;
+using WebStore.Interfaces.Services;
+using WebStore.Services.Data;
 
-namespace WebStore.Infrastructure.Services.InMemory
+namespace WebStore.Services.Infrastructure.Services.InMemory
 {
     public class InMemoryEmployeesData : IEmployeesData
     {
@@ -42,7 +42,7 @@ namespace WebStore.Infrastructure.Services.InMemory
                 return;
 
             var db_item = Get(employee.Id);
-            if(db_item is null)
+            if (db_item is null)
                 return;
 
             db_item.LastName = employee.LastName;

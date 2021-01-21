@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
 using WebStore.DAL.Context;
-using WebStore.Data;
 using WebStore.Domain.Entities.Identity;
-using WebStore.Infrastructure.Interfaces;
-using WebStore.Infrastructure.Services.InCookies;
-using WebStore.Infrastructure.Services.InMemory;
-using WebStore.Infrastructure.Services.InSQL;
+using WebStore.Infrastructure.Services;
+using WebStore.Interfaces.Services;
+using WebStore.Services.Data;
+using WebStore.Services.Infrastructure.Services.InCookies;
+using WebStore.Services.Infrastructure.Services.InMemory;
+using WebStore.Services.Infrastructure.Services.InSQL;
 
 namespace WebStore
 {

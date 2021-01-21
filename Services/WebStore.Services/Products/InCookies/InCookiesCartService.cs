@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Http;
-
+﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using System.Linq;
 using WebStore.Domain;
 using WebStore.Domain.Entities;
-using WebStore.Infrastructure.Interfaces;
-using WebStore.Infrastructure.Mapping;
-using WebStore.ViewModels;
+using WebStore.Domain.ViewModels;
+using WebStore.Infrastructure.Services;
+using WebStore.Interfaces.Services;
+using WebStore.Services.Infrastructure.Mapping;
 
-namespace WebStore.Infrastructure.Services.InCookies
+namespace WebStore.Services.Infrastructure.Services.InCookies
 {
     public class InCookiesCartService : ICartService
     {
@@ -63,7 +59,7 @@ namespace WebStore.Infrastructure.Services.InCookies
             var item = cart.Items.FirstOrDefault(i => i.ProductId == id);
 
             if (item is null)
-                cart.Items.Add(new CartItem {ProductId = id, Quantity = 1});
+                cart.Items.Add(new CartItem { ProductId = id, Quantity = 1 });
             else
                 item.Quantity++;
 
@@ -75,7 +71,7 @@ namespace WebStore.Infrastructure.Services.InCookies
             var cart = Cart;
             var item = cart.Items.FirstOrDefault(i => i.ProductId == id);
 
-            if(item is null) return;
+            if (item is null) return;
 
             if (item.Quantity > 0)
                 item.Quantity--;
@@ -120,6 +116,11 @@ namespace WebStore.Infrastructure.Services.InCookies
             {
                 Items = Cart.Items.Select(item => (product_view_models[item.ProductId], item.Quantity))
             };
+        }
+
+        CartViewModel ICartService.TransformFromCart()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
