@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Net.Http;
-using System.Text;
+using System.Net.Http.Headers;
 
 namespace WebStore.Clients.Base
 {
@@ -10,9 +10,16 @@ namespace WebStore.Clients.Base
         protected string Address { get; }
         protected HttpClient Http { get; }
 
-        protected BaseClient(HttpClient client, string ServiceAddress)
+        protected BaseClient(IConfiguration configuration, string ServiceAddress)
         {
-            Http = client;
+            Http = new HttpClient
+            {
+                BaseAddress = new Uri(configuration["WebApiURL"]),
+                DefaultRequestHeaders =
+                {
+                    Accept = {new MediaTypeWithQualityHeaderValue("application/json") }
+                }
+            };
             Address = ServiceAddress;
         }
     }

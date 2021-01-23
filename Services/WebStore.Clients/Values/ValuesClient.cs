@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -11,7 +12,7 @@ namespace WebStore.Clients.Values
 {
     public class ValuesClient : BaseClient, IValuesServices
     {
-        public ValuesClient(HttpClient client) : base(client, "api/values")
+        public ValuesClient(IConfiguration configuration) : base(configuration, "api/values")
         {
 
         }
@@ -46,7 +47,7 @@ namespace WebStore.Clients.Values
         public HttpStatusCode Delete(int id)
         {
             var response = Http.DeleteAsync($"{Address}/{id}").Result;
-            return response.StatusCode
+            return response.StatusCode;
         }
     }
 }

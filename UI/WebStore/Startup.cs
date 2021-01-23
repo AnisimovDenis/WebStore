@@ -7,10 +7,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebStore.Clients.Values;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Services;
 using WebStore.Interfaces.Services;
+using WebStore.Interfaces.TestAPI;
 using WebStore.Services.Data;
 using WebStore.Services.Infrastructure.Services.InCookies;
 using WebStore.Services.Infrastructure.Services.InMemory;
@@ -64,18 +66,15 @@ namespace WebStore
                 opt.SlidingExpiration = true;
             });
             
-            //services.AddTransient<IService, ServiceImplementation>();
-            //services.AddScoped<IService, ServiceImplementation>();
-            //services.AddSingleton<IService, ServiceImplementation>();
 
             services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
-            //services.AddTransient<IEmployeesData>(service => new InMemoryEmployeesData());
-            //services.AddTransient<IProductData, InMemoryProductData>();
             services.AddTransient<IProductData, SqlProductData>();
             services.AddScoped<ICartService, InCookiesCartService>();
             services.AddScoped<IOrderService, SqlOrderService>();
+            services.AddScoped<IValuesServices, ValuesClient>();
 
-            //services.AddMvc(opt => opt.Conventions.Add(new WebStoreControllerConvention()));
+
+
             services
                .AddControllersWithViews(opt =>
                 {
@@ -102,16 +101,6 @@ namespace WebStore
             
             app.UseAuthorization();
 
-            //app.UseMiddleware<TestMiddleware>();
-            //app.UseMiddleware(typeof(TestMiddleware));
-
-            //app.Map(
-            //    "/Hello", 
-            //    context => context.Run(async request => await request.Response.WriteAsync("Hello World!")));
-
-            //app.MapWhen(
-            //    context => context.Request.Query.ContainsKey("id") && context.Request.Query["id"] == "5",
-            //    context => context.Run(async request => await request.Response.WriteAsync("Hello World with id:5!")));
 
             app.UseWelcomePage("/welcome");
 
