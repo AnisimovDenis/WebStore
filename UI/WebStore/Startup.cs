@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebStore.Clients.Employees;
+using WebStore.Clients.Identity;
 using WebStore.Clients.Orders;
 using WebStore.Clients.Products;
 using WebStore.Clients.Values;
@@ -25,17 +26,10 @@ namespace WebStore
 {
     public class Startup
     {
-        private readonly IConfiguration _Configuration;
-
-        public Startup(IConfiguration Configuration) => _Configuration = Configuration;
-
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(_Configuration.GetConnectionString("Default")));
-            services.AddTransient<WebStoreDbInitializer>();
-
-            services.AddIdentity<User, Role>(/*opt => { }*/)
-               .AddEntityFrameworkStores<WebStoreDB>()
+            services.AddIdentity<User, Role>()
+               .AddIdentityWebStoreWebAPIClients()
                .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(opt =>
@@ -68,28 +62,21 @@ namespace WebStore
 
                 opt.SlidingExpiration = true;
             });
-            
-            //services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
+
+
             services.AddTransient<IEmployeesData, EmployeesClient>();
             services.AddTransient<IProductData, ProductsClient>();
             services.AddScoped<ICartService, InCookiesCartService>();
             services.AddScoped<IOrderService, OrdersClient>();
             services.AddScoped<IValuesServices, ValuesClient>();
 
-
-
             services
-               .AddControllersWithViews(opt =>
-                {
-                    //opt.Conventions.Add(new WebStoreControllerConvention());
-                })
+               .AddControllersWithViews()
                .AddRazorRuntimeCompilation();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDbInitializer db)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            db.Initialize();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -101,17 +88,11 @@ namespace WebStore
             app.UseRouting();
 
             app.UseAuthentication();
-            
+
             app.UseAuthorization();
-
-
-            app.UseWelcomePage("/welcome");
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/greetings", async ctx => await ctx.Response.WriteAsync(_Configuration["greetings"]));
-                endpoints.MapGet("/HelloWorld", async ctx => await ctx.Response.WriteAsync("Hello World!"));
-
                 endpoints.MapControllerRoute(
                     name: "areas",
                     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
@@ -120,10 +101,6 @@ namespace WebStore
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                // http://localhost:5000 -> controller == "Home" action == "Index"
-                // http://localhost:5000/Products -> controller == "Products" action == "Index"
-                // http://localhost:5000/Products/Page -> controller == "Products" action == "Page"
-                // http://localhost:5000/Products/Page/5 -> controller == "Products" action == "Page" id = "5"
             });
         }
     }

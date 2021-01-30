@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using System.IO;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Services;
@@ -20,21 +21,17 @@ namespace WebStore.ServiceHosting
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        public Startup(IConfiguration configuration) => Configuration = configuration;
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<WebStoreDB>(
                 opt => opt.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddTransient<WebStoreDbInitializer>();
 
-            services.AddIdentity<User, Role>(/*opt => { }*/)
+            services.AddIdentity<User, Role>()
                .AddEntityFrameworkStores<WebStoreDB>()
                .AddDefaultTokenProviders();
 
@@ -57,20 +54,34 @@ namespace WebStore.ServiceHosting
             });
 
             services.AddScoped<IEmployeesData, InMemoryEmployeesData>();
-            services.AddScoped<IProductData, SqlProductData>()
-                .AddScoped<ICartService, InCookiesCartService>()
-                .AddScoped<IOrderService, SqlOrderService>();
+            services
+               .AddScoped<IProductData, SqlProductData>()
+               .AddScoped<ICartService, InCookiesCartService>()
+               .AddScoped<IOrderService, SqlOrderService>();
 
             services.AddControllers();
+
+            const string webstore_api_xml = "WebStore.ServiceHosting.xml";
+            const string webstore_domain_xml = "WebStore.Domain.xml";
+            const string debug_path = "bin/Debug/net5.0";
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebStore.ServiceHosting", Version = "v1" });
+
+                c.IncludeXmlComments(webstore_api_xml);
+
+                if (File.Exists(webstore_domain_xml))
+                    c.IncludeXmlComments(webstore_domain_xml);
+                else if (File.Exists(Path.Combine(debug_path, webstore_domain_xml)))
+                    c.IncludeXmlComments(Path.Combine(debug_path, webstore_domain_xml));
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDbInitializer db)
         {
+            db.Initialize();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

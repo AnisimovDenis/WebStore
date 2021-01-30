@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebStore.Domain.Models;
+using WebStore.Domain.Entities;
 using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
 
@@ -15,62 +11,71 @@ namespace WebStore.ServiceHosting.Controllers
     [ApiController]
     public class EmployeesApiController : ControllerBase, IEmployeesData
     {
-        private readonly IEmployeesData EmployeesData;
-        private readonly ILogger<EmployeesApiController> logger;
+        private readonly IEmployeesData _EmployeesData;
+        private readonly ILogger<EmployeesApiController> _Logger;
 
-        public EmployeesApiController(IEmployeesData EmployeesData, ILogger<EmployeesApiController> logger)
+        public EmployeesApiController(IEmployeesData EmployeesData, ILogger<EmployeesApiController> Logger)
         {
-            this.EmployeesData = EmployeesData;
-            this.logger = logger;
+            _EmployeesData = EmployeesData;
+            _Logger = Logger;
         }
 
+        /// <summary>Получение всех сотрудников</summary>
+        /// <returns>Список сотрудников</returns>
+        [HttpGet]
+        public IEnumerable<Employee> Get() => _EmployeesData.Get();
+
+        /// <summary>Получение сотрудника по идентификатору</summary>
+        /// <param name="id">Идентификатор сотрудника</param>
+        [HttpGet("{id}")]
+        public Employee Get(int id) => _EmployeesData.Get(id);
+
+        /// <summary>Добавление нового сотрудника</summary>
+        /// <param name="employee">Добавляемый сотрудник</param>
+        /// <returns>Идентификатор нового сотрудника</returns>
         [HttpPost]
         public int Add(Employee employee)
         {
-            logger.LogInformation($"Добавление сотрудника {employee.LastName} {employee.FirstName} {employee.Patronymic}");
+            if (!ModelState.IsValid)
+            {
+                _Logger.LogWarning("Ошибка модели данных при добавлении нового сотрудника {0} {1} {2}",
+                    employee.LastName, employee.FirstName, employee.Patronymic);
+                return 0;
+            }
 
-            var id = EmployeesData.Add(employee);
+            _Logger.LogInformation("Добавление сотрудника {0} {1} {2}",
+                employee.LastName, employee.FirstName, employee.Patronymic);
+
+            var id = _EmployeesData.Add(employee);
 
             if (id > 0)
-                logger.LogInformation($"Cотрудник  [id:{employee.Id}] {employee.LastName} {employee.FirstName} {employee.Patronymic} успешно добавлен");
+                _Logger.LogInformation("Сотрудник [id:{0}] {1} {2} {3} добавлен успешно",
+                    employee.Id, employee.LastName, employee.FirstName, employee.Patronymic);
             else
-                logger.LogError("Ошибка при добавлении");
+                _Logger.LogWarning("Ошибка при добавлении сотрудника {0} {1} {2}",
+                    employee.LastName, employee.FirstName, employee.Patronymic);
 
             return id;
         }
 
+        /// <summary>Редактирование сотрудника</summary>
+        /// <param name="employee">Информация для изменения данных сотрудника</param>
+        [HttpPut/*("{id}")*/]
+        public void Update(/*int id,*/ Employee employee) => _EmployeesData.Update(employee);
+
+        /// <summary>Удаление сотрудника по его id</summary>
+        /// <param name="id">Идентификатор удаляемого сотрудника</param>
+        /// <returns>Истина, если сотрудник был удалён</returns>
         [HttpDelete("{id}")]
         public bool Delete(int id)
         {
-            logger.LogInformation($"Удаление сотрудника [id:{id}]");
-
-            var deleteResult = EmployeesData.Delete(id);
-
-            if (deleteResult == true)
-                logger.LogInformation($"Сотрудник [id:{id}] успешно удален");
+            var result = _EmployeesData.Delete(id);
+            if (result)
+                _Logger.LogInformation("Сотрудник с id:{0} успешно удалён", id);
             else
-                logger.LogInformation($"Ошибка при удалении");
+                _Logger.LogWarning("ошибка при попытке удаления сотрудника с id:{0}", id);
 
-            return deleteResult;
-        }
-
-        [HttpGet]
-        public IEnumerable<Employee> Get() => EmployeesData.Get();
-
-        [HttpGet("{id}")]
-        public Employee Get(int id) => EmployeesData.Get(id);
-
-        [HttpPut]
-        public void Update(Employee employee)
-        {
-            logger.LogInformation($"Редактирование сотрудника {employee.LastName} {employee.FirstName} {employee.Patronymic}");
-
-            EmployeesData.Update(employee);
-
-            if (employee.Id > 0)
-                logger.LogInformation($"Cотрудник  [id:{employee.Id}] {employee.LastName} {employee.FirstName} {employee.Patronymic} успешно изменен");
-            else
-                logger.LogError("Ошибка при редактировании");
+            return result;
         }
     }
 }

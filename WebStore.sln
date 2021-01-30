@@ -19,9 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.Services", "Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.Interfaces", "WebStore.Interfaces\WebStore.Interfaces.csproj", "{367259C1-FD95-4074-918D-4A9AFD6D9B7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStore.ServiceHosting", "WebStore.ServiceHosting\WebStore.ServiceHosting.csproj", "{19593EDE-C3BD-4A96-BC39-D46BA165DB77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.ServiceHosting", "WebStore.ServiceHosting\WebStore.ServiceHosting.csproj", "{19593EDE-C3BD-4A96-BC39-D46BA165DB77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStore.Clients", "Services\WebStore.Clients\WebStore.Clients.csproj", "{71C8FE81-183A-4AE3-BAD7-E885C69A72D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.Clients", "Services\WebStore.Clients\WebStore.Clients.csproj", "{71C8FE81-183A-4AE3-BAD7-E885C69A72D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStore.Console", "UI\WebStore.Console\WebStore.Console.csproj", "{AD879D53-5D50-419E-A65C-DE6606CF7260}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{71C8FE81-183A-4AE3-BAD7-E885C69A72D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71C8FE81-183A-4AE3-BAD7-E885C69A72D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71C8FE81-183A-4AE3-BAD7-E885C69A72D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD879D53-5D50-419E-A65C-DE6606CF7260}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD879D53-5D50-419E-A65C-DE6606CF7260}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD879D53-5D50-419E-A65C-DE6606CF7260}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD879D53-5D50-419E-A65C-DE6606CF7260}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{367259C1-FD95-4074-918D-4A9AFD6D9B7B} = {A3933E6A-01FF-4C99-9581-CE60533C24E3}
 		{19593EDE-C3BD-4A96-BC39-D46BA165DB77} = {A3933E6A-01FF-4C99-9581-CE60533C24E3}
 		{71C8FE81-183A-4AE3-BAD7-E885C69A72D4} = {A3933E6A-01FF-4C99-9581-CE60533C24E3}
+		{AD879D53-5D50-419E-A65C-DE6606CF7260} = {A28AE61D-8E6E-4662-BD6E-D2F762506C42}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {46EB41B1-EDB9-4CF4-944B-789B8E104404}
