@@ -12,7 +12,7 @@ namespace WebStore.Services.Mapping
     {
         public static SectionDTO ToDTO(this Section section) => section is null 
             ? null 
-            : new SectionDTO(section.Id, section.Name, section.Order, section.ParentId);
+            : new SectionDTO(section.Id, section.Name, section.Order, section.ParentId, section.Products.Count());
 
         public static Section FromDTO(this SectionDTO section) => section is null
             ? null
@@ -21,7 +21,7 @@ namespace WebStore.Services.Mapping
                 Id = section.Id,
                 Name = section.Name,
                 Order = section.Order,
-                ParentId = section.ParentId
+                ParentId = section.ParentId,
             };
 
         public static IEnumerable<SectionDTO> ToDTO(this IEnumerable<Section> sections) => sections.Select(ToDTO);

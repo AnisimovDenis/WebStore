@@ -17,7 +17,7 @@ namespace WebStore.Services.Infrastructure.Services.InSQL
 
         public SqlProductData(WebStoreDB db) => _db = db;
 
-        public IEnumerable<SectionDTO> Sections => _db.Sections.Include(section => section.Products).AsEnumerable().ToDTO();
+        public IEnumerable<SectionDTO> GetSections() => _db.Sections.Include(section => section.Products).AsEnumerable().ToDTO();
 
         //public Section GetSectionById(int id) => _db.Sections.Find(id);
         public SectionDTO GetSectionById(int id) => _db.Sections

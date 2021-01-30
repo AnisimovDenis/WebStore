@@ -12,9 +12,9 @@ using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Services;
 using WebStore.Interfaces.Services;
 using WebStore.Services.Data;
-using WebStore.Services.Infrastructure.Services.InCookies;
 using WebStore.Services.Infrastructure.Services.InMemory;
 using WebStore.Services.Infrastructure.Services.InSQL;
+using WebStore.Services.Products.InCookies;
 
 namespace WebStore.ServiceHosting
 {
@@ -31,7 +31,7 @@ namespace WebStore.ServiceHosting
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<WebStoreDB>(
-                opt => opt.UseSqlServer(Configuration["Default"]));
+                opt => opt.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddTransient<WebStoreDbInitializer>();
 
             services.AddIdentity<User, Role>(/*opt => { }*/)

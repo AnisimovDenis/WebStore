@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
 using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain.ViewModels;
 using WebStore.Interfaces.Services;
@@ -23,7 +22,7 @@ namespace WebStore.Components
                 {
                     Id = brand.Id,
                     Name = brand.Name,
-                    ProductsCount = brand.FromDTO().Products.Count()
+                    ProductsCount = brand.ProductsCount
                 });
     }
 }

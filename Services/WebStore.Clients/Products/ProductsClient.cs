@@ -34,6 +34,6 @@ namespace WebStore.Clients.Products
 
         public SectionDTO GetSectionById(int id) => Get<SectionDTO>($"{Address}/brands/{id}");
 
-        public IEnumerable<SectionDTO> Sections => Get<IEnumerable<SectionDTO>>($"{Address}/sections");
+        public IEnumerable<SectionDTO> GetSections() => Get<IEnumerable<SectionDTO>>($"{Address}/sections");
     }
 }

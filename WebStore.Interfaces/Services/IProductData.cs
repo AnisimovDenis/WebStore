@@ -7,7 +7,7 @@ namespace WebStore.Interfaces.Services
 {
     public interface IProductData
     {
-        IEnumerable<SectionDTO> Sections { get; }
+        IEnumerable<SectionDTO> GetSections();
 
         SectionDTO GetSectionById(int id);
 

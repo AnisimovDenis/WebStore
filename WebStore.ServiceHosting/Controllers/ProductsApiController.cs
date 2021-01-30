@@ -1,12 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WebStore.Domain;
 using WebStore.Domain.DTO.Products;
-using WebStore.Domain.Entities;
 using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
 
@@ -20,10 +15,13 @@ namespace WebStore.ServiceHosting.Controllers
 
         public ProductsApiController(IProductData productData) => this.productData = productData;
 
+        [HttpGet("brands/{id}")]
         public BrandDTO GetBrandById(int id) => productData.GetBrandById(id);
 
+        [HttpGet("brands")]
         public IEnumerable<BrandDTO> GetBrands() => productData.GetBrands();
 
+        [HttpGet("{id}")]
         public ProductDTO GetProductById(int id) => productData.GetProductById(id);
 
         [HttpPost]
@@ -33,6 +31,6 @@ namespace WebStore.ServiceHosting.Controllers
         public SectionDTO GetSectionById(int id) => productData.GetSectionById(id);
 
         [HttpGet("sections")]
-        public IEnumerable<SectionDTO> Sections => productData.Sections;
+        public IEnumerable<SectionDTO> GetSections() => productData.GetSections();
     }
 }
