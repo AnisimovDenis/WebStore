@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebStore.Clients.Employees;
+using WebStore.Clients.Orders;
+using WebStore.Clients.Products;
 using WebStore.Clients.Values;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
@@ -14,9 +17,9 @@ using WebStore.Infrastructure.Services;
 using WebStore.Interfaces.Services;
 using WebStore.Interfaces.TestAPI;
 using WebStore.Services.Data;
-using WebStore.Services.Infrastructure.Services.InCookies;
 using WebStore.Services.Infrastructure.Services.InMemory;
 using WebStore.Services.Infrastructure.Services.InSQL;
+using WebStore.Services.Products.InCookies;
 
 namespace WebStore
 {
@@ -66,11 +69,11 @@ namespace WebStore
                 opt.SlidingExpiration = true;
             });
             
-
-            services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
-            services.AddTransient<IProductData, SqlProductData>();
+            //services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
+            services.AddTransient<IEmployeesData, EmployeesClient>();
+            services.AddTransient<IProductData, ProductsClient>();
             services.AddScoped<ICartService, InCookiesCartService>();
-            services.AddScoped<IOrderService, SqlOrderService>();
+            services.AddScoped<IOrderService, OrdersClient>();
             services.AddScoped<IValuesServices, ValuesClient>();
 
 

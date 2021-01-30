@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain;
 using WebStore.Domain.ViewModels;
 using WebStore.Interfaces.Services;
-using WebStore.Services.Infrastructure.Mapping;
+using WebStore.Services.Mapping;
 
 namespace WebStore.Controllers
 {
@@ -21,7 +21,7 @@ namespace WebStore.Controllers
                 SectionId = SectionId,
             };
 
-            var products = _ProductData.GetProducts(filter);
+            var products = _ProductData.GetProducts().FromDTO();
 
             return View(new CatalogViewModel
             {
@@ -58,7 +58,7 @@ namespace WebStore.Controllers
             if (product is null)
                 return NotFound();
             
-            return View(product.ToView());
+            return View(product.FromDTO().ToView());
         }
     }
 }

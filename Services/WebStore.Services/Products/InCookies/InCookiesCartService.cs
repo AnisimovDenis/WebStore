@@ -6,9 +6,9 @@ using WebStore.Domain.Entities;
 using WebStore.Domain.ViewModels;
 using WebStore.Infrastructure.Services;
 using WebStore.Interfaces.Services;
-using WebStore.Services.Infrastructure.Mapping;
+using WebStore.Services.Mapping;
 
-namespace WebStore.Services.Infrastructure.Services.InCookies
+namespace WebStore.Services.Products.InCookies
 {
     public class InCookiesCartService : ICartService
     {
@@ -110,17 +110,12 @@ namespace WebStore.Services.Infrastructure.Services.InCookies
                 Ids = Cart.Items.Select(item => item.ProductId).ToArray()
             });
 
-            var product_view_models = products.ToView().ToDictionary(p => p.Id);
+            var product_view_models = products.FromDTO().ToView().ToDictionary(p => p.Id);
 
             return new CartViewModel
             {
                 Items = Cart.Items.Select(item => (product_view_models[item.ProductId], item.Quantity))
             };
-        }
-
-        CartViewModel ICartService.TransformFromCart()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
