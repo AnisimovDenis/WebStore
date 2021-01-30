@@ -16,7 +16,7 @@ namespace WebStore.Components
 
         public IViewComponentResult Invoke()
         {
-            var sections = _ProductData.GetSections().ToArray();
+            var sections = _ProductData.Sections.ToArray();
 
             var parent_sections = sections.Where(s => s.ParentId is null);
             

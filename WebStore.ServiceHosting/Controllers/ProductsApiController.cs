@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 using WebStore.Domain;
 using WebStore.Domain.DTO.Products;
 using WebStore.Domain.Entities;
+using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
 
 namespace WebStore.ServiceHosting.Controllers
 {
-    [Route("api/[controller]")]
+    [Route(WebAPI.Products)]
     [ApiController]
     public class ProductsApiController : ControllerBase, IProductData
     {
@@ -32,6 +33,6 @@ namespace WebStore.ServiceHosting.Controllers
         public SectionDTO GetSectionById(int id) => productData.GetSectionById(id);
 
         [HttpGet("sections")]
-        public IEnumerable<SectionDTO> GetSections() => productData.GetSections();
+        public IEnumerable<SectionDTO> Sections => productData.Sections;
     }
 }
