@@ -51,5 +51,18 @@ namespace WebStore.Clients.Base
             var response = await Http.DeleteAsync(url);
             return response;
         }
+
+        public void Dispose() => Dispose(true);
+
+        protected virtual void Dispose(bool Disposing)
+        {
+            if (Disposing)
+            {
+                // освобождение управляемых ресурсов
+                Http.Dispose();
+            }
+
+            // освобождение неуправляемых ресурсов
+        }
     }
 }
