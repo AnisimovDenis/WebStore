@@ -12,9 +12,9 @@ namespace WebStore.Domain.DTO.Identity
         public IEnumerable<Claim> Claims { get; set; }
     }
 
-    public class AddClaim : ClaimDTO { }
+    public class AddClaimDTO : ClaimDTO { }
 
-    public class RemoveClaim : ClaimDTO { }
+    public class RemoveClaimDTO : ClaimDTO { }
 
     public class ReplaceClaimDTO : UserDTO 
     {
