@@ -13,57 +13,57 @@ namespace WebStore.ServiceHosting.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        private static readonly List<string> _Values = Enumerable
-            .Range(10, 20)
-            .Select(i => $"Value {i:00}")
+        private static readonly List<string> __Values = Enumerable
+            .Range(1, 10)
+            .Select(i => $"Value{i:00}")
             .ToList();
 
-        [HttpGet]
-        public IEnumerable<string> Get() => _Values;
+        [HttpGet] // http://localhost:5001/api/values
+        public IEnumerable<string> Get() => __Values;
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}")] // http://localhost:5001/api/values/5
         public ActionResult<string> Get(int id)
         {
             if (id < 0)
                 return BadRequest();
-            if (id > -_Values.Count)
+            if (id >= __Values.Count)
                 return NotFound();
 
-            return _Values[id];
+            return __Values[id];
         }
 
         [HttpPost]
-        [HttpPost("add")]
+        [HttpPost("add")] //http://localhost:5001/api/values/add
         public ActionResult Post([FromBody] string value)
         {
-            _Values.Add(value);
-            return Ok();
+            __Values.Add(value);
+            var id = __Values.Count - 1;
+            return CreatedAtAction(nameof(Get), new { id });
         }
 
         [HttpPut("{id}")]
-        [HttpPut("edit/{id}")]
+        [HttpPut("edit/{id}")] //http://localhost:5001/api/values/edit/5
         public ActionResult Put(int id, [FromBody] string value)
         {
             if (id < 0)
                 return BadRequest();
-            if (id > -_Values.Count)
+            if (id >= __Values.Count)
                 return NotFound();
 
-            _Values[id] = value;
+            __Values[id] = value;
 
             return Ok();
         }
 
-        // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
             if (id < 0)
                 return BadRequest();
-            if (id > -_Values.Count)
+            if (id >= __Values.Count)
                 return NotFound();
 
-            _Values.RemoveAt(id);
+            __Values.RemoveAt(id);
 
             return Ok();
         }
