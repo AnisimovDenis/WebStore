@@ -1,5 +1,5 @@
 ﻿@using WebStore.Domain.Entities.Identity
-@model Employee
+@model WebStore.Domain.Entities.Employee
 
 <div class="container">
     <h3>Сотрудник</h3>
@@ -20,9 +20,9 @@
         <dt>Возраст</dt>
         <dd>@Model.Age</dd>
     </dl>
-    
-    <hr/>
-    
+
+    <hr />
+
     @if (User.IsInRole(Role.Administrator))
     {
         <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-default">
