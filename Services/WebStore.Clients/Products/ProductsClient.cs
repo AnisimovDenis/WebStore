@@ -1,10 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+
 using WebStore.Clients.Base;
 using WebStore.Domain;
 using WebStore.Domain.DTO.Products;
@@ -15,25 +12,25 @@ namespace WebStore.Clients.Products
 {
     public class ProductsClient : BaseClient, IProductData
     {
-        public ProductsClient(IConfiguration configuration) : base(configuration, WebAPI.Products) { }
+        public ProductsClient(IConfiguration Configuration) : base(Configuration, WebAPI.Products) { }
 
-        public BrandDTO GetBrandById(int id) => Get<BrandDTO>($"{Address}/brands/{id}");
+        public IEnumerable<SectionDTO> GetSections() => Get<IEnumerable<SectionDTO>>($"{Address}/sections");
+
+        public SectionDTO GetSectionById(int id) => Get<SectionDTO>($"{Address}/sections/{id}");
 
         public IEnumerable<BrandDTO> GetBrands() => Get<IEnumerable<BrandDTO>>($"{Address}/brands");
 
-        public ProductDTO GetProductById(int id)
+        public BrandDTO GetBrandById(int id) => Get<BrandDTO>($"{Address}/brands/{id}");
+
+        public PageProductsDTO GetProducts(ProductFilter Filter = null)
         {
-            return Get<ProductDTO>($"{Address}/{id}");
+            var response = Post(Address, Filter ?? new ProductFilter());
+            var result = response.Content
+               .ReadAsAsync<PageProductsDTO>()
+               .Result;
+            return result;
         }
 
-        public IEnumerable<ProductDTO> GetProducts(ProductFilter Filter = null) => 
-                 Post(Address, Filter ?? new ProductFilter())
-                 .Content
-                 .ReadAsAsync<IEnumerable<ProductDTO>>()
-                 .Result;
-
-        public SectionDTO GetSectionById(int id) => Get<SectionDTO>($"{Address}/brands/{id}");
-
-        public IEnumerable<SectionDTO> GetSections() => Get<IEnumerable<SectionDTO>>($"{Address}/sections");
+        public ProductDTO GetProductById(int id) => Get<ProductDTO>($"{Address}/{id}");
     }
 }

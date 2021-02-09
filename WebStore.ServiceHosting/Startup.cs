@@ -16,6 +16,7 @@ using WebStore.Services.Data;
 using WebStore.Services.Infrastructure.Services.InMemory;
 using WebStore.Services.Infrastructure.Services.InSQL;
 using WebStore.Services.Products.InCookies;
+using WebStore.Services.Products.InSQL;
 
 namespace WebStore.ServiceHosting
 {
