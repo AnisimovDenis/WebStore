@@ -19,5 +19,12 @@ namespace WebStore.Domain.DTO.Products
 
     public record SectionDTO(int Id, string Name, int Order, int? ParentId, int ProductsCount);
 
-    public record ProductDTO(int Id, string Name, int Order, decimal Price, string ImageUrl, BrandDTO Brand, SectionDTO Section);
+    public record ProductDTO(
+        int Id,
+        string Name,
+        int Order,
+        decimal Price,
+        string ImageUrl,
+        BrandDTO Brand,
+        SectionDTO Section);
 }

@@ -1,9 +1,9 @@
-﻿@model IEnumerable<ProductViewModel>
+﻿@model IEnumerable<WebStore.Domain.ViewModels.ProductViewModel>
 
 <div class="features_items">
     <!--features_items-->
     <h2 class="title text-center">Товары из каталога</h2>
-    
+
     @if (Model is null || !Model.Any())
     {
         <p>Товары в выдаче каталога отсутствуют</p>
@@ -12,7 +12,7 @@
     {
         foreach (var product in Model)
         {
-            <partial name="Partial/_ProductCart" model="product"/>
+            <partial name="Partial/_ProductCart" model="product" />
         }
     }
 
