@@ -56,6 +56,11 @@ namespace WebStore.Services.Products.InSQL
 
             var total_count = query.Count();
 
+            if (Filter?.PageSize > 0)
+                query = query
+                   .Skip((Filter.Page - 1) * (int)Filter.PageSize)
+                   .Take((int)Filter.PageSize);
+
 
             return new PageProductsDTO(query.AsEnumerable().ToDTO(), total_count);
         }
